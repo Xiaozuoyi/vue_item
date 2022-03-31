@@ -370,7 +370,7 @@ export default {
     //加入购物车回调函数
     async addShopcar() {
       try {
-        let result = await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.commodityId, skuNum: this.skuNum })
+        await this.$store.dispatch('addOrUpdateShopCart', { skuId: this.$route.params.commodityId, skuNum: this.skuNum })
         //进行转路由
         //在路由跳转的时候还需要将产品的信息带给下一级的路由组件
         //一些简单的数据skuNum,通过query形式给路由组件传递过去

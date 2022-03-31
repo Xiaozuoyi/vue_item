@@ -87,8 +87,8 @@ export default {
         const { phone, code, password, confirmPass } = this
         if (phone !== '' && code !== '' && confirmPass == password) {
           await this.$store.dispatch('userRegister', { phone, code, password })
+          this.$router.push('/login')
         };
-        this.$router.push('/login')
       } catch (error) {
         return alert(error.message);
       }

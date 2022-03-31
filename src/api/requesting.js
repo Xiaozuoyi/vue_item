@@ -19,6 +19,9 @@ requesting.interceptors.request.use((config) => {
     //请求头添加一个字段(不能瞎写需要和后端商量)
     config.headers.userTempId = store.state.detail.uuid_token;
   }
+  if (store.state.user.token) {
+    config.headers.token = store.state.user.token;
+  }
   return config;
 });
 //响应拦截器

@@ -12,11 +12,11 @@ const actions = {
   },
   //添加至购物车
   async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
-    let resultf = reqAddOrUpdateShopCart(skuId, skuNum);
+    let result = await reqAddOrUpdateShopCart(skuId, skuNum);
     if (result.code == 200) {
       return "ok";
     } else {
-      return Promise.reject(new Error("failed"));
+      return Promise.reject(new Error(result.message));
     }
   },
 };

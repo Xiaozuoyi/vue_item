@@ -36,3 +36,9 @@ export const reqUserRegister = (data) =>
 //用户登录
 export const reqUserLogin = (data) =>
   requesting({ url: `/user/passport/login`, data, method: "post" });
+//获取用户信息
+export const reqUserInfo = () =>
+  requesting({ url: `/user/passport/auth/getUserInfo`, method: "get" });
+//退出登录
+export const reqLogout = () =>
+  requesting({ url: `/user/passport/logout`, method: "get" });
