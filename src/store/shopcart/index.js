@@ -37,7 +37,19 @@ const actions = {
       //将每一次返回的promise添加到数组中
       promiseAll.push(promise);
     });
-    //只要promise都为成功,返回结果即为成功。如果有一个失败，即返回的为失败 
+    //只要promise都为成功,返回结果即为成功。如果有一个失败，即返回的为失败
+    return Promise.all(promiseAll);
+  },
+  //修改全部商品的勾选状态
+  updateAllCartIsChecked({ dispatch, state }, isChecked) {
+    let promiseAll = [];
+    state.cartList[0].cartInfoList.forEach((item) => {
+      let promise = dispatch("updateCheckdById", {
+        skuId: item.skuId,
+        isChecked,
+      });
+      promiseAll.push(promise);
+    });
     return Promise.all(promiseAll);
   },
 };
