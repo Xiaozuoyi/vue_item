@@ -13,7 +13,11 @@ const actions = {
   //添加至购物车
   async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
     let resultf = reqAddOrUpdateShopCart(skuId, skuNum);
-    return "ok";
+    if (result.code == 200) {
+      return "ok";
+    } else {
+      return Promise.reject(new Error("failed"));
+    }
   },
 };
 //准备mutations对象——修改state中的数据
