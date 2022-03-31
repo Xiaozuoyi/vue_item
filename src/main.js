@@ -1,8 +1,30 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
+//三级联动组件----全局组件
+import TypeNav from "@/components/TypeNav";
+Vue.component(TypeNav.name, TypeNav);
+//轮播图组件----全局组件
+import Carousel from "@/components/Carousel";
+Vue.component(Carousel.name, Carousel);
+//分页器全局组件
+import Pagination from "@/components/Pagination";
+Vue.component(Pagination.name, Pagination);
 
-Vue.config.productionTip = false
-
+//引入路由
+import router from "@/router";
+Vue.config.productionTip = false;
+//引入vuex
+import store from "@/store";
+//引入mock数据
+import "@/mock/mockServe";
+//引入swiper样式
+import "swiper/css/swiper.css";
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  render: (h) => h(App),
+  router,
+  store,
+  //全局事件总线$bus配置
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
+}).$mount("#app");
