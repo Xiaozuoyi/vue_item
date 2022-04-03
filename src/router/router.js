@@ -60,16 +60,46 @@ export default [
     path: "/trade",
     component: Trade,
     meta: { show: true, title: "订单页面" },
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      //去交易页面,必须是从购物车过来的
+      if (from.path == "/shopcart") {
+        next();
+      } else {
+        //如果不是从购物车过来的,停留在当前页面
+        next(false);
+      }
+    },
   },
   {
     path: "/pay",
     component: Pay,
     meta: { show: true, title: "支付页面" },
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      //去交易页面,必须是从订单页面过来的
+      if (from.path == "/trade") {
+        next();
+      } else {
+        //如果不是从订单页面过来的,停留在当前页面
+        next(false);
+      }
+    },
   },
   {
     path: "/paySuccess",
     component: PaySuccess,
     meta: { show: true, title: "支付成功" },
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      //去交易页面,必须是从支付页面过来的
+      if (from.path == "/pay") {
+        next();
+      } else {
+        //如果不是从支付页面过来的,停留在当前页面
+        next(false);
+      }
+    },
   },
   {
     path: "/center",

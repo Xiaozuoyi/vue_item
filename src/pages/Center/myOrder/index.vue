@@ -86,32 +86,14 @@
                 </table>
             </div>
             <div class="choose-order">
-                <div class="pagination">
-                    <ul>
-                        <li class="prev disabled">
-                            <a href="javascript:">«上一页</a>
-                        </li>
-                        <li class="page actived">
-                            <a href="javascript:">1</a>
-                        </li>
-                        <li class="page">
-                            <a href="javascript:">2</a>
-                        </li>
-                        <li class="page">
-                            <a href="javascript:">3</a>
-                        </li>
-                        <li class="page">
-                            <a href="javascript:">4</a>
-                        </li>
-
-                        <li class="next disabled">
-                            <a href="javascript:">下一页»</a>
-                        </li>
-                    </ul>
-                    <div>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;共2页&nbsp;</span>
-                    </div>
-                </div>
+                <!-- 分页器-->
+                <Pagination
+                    :pageNo="page"
+                    :pageSize="limit"
+                    :total="myOrder.total"
+                    :continues="5"
+                    @getPageNo="getPageNo"
+                />
             </div>
         </div>
         <!--猜你喜欢-->
@@ -186,7 +168,12 @@ export default {
             if (result.code == 200) {
                 this.myOrder = result.data
             }
-        }
+        },
+        //获取当前点击页码
+        getPageNo(page) {
+            this.page = page
+            this.getData()
+        },
     },
     mounted() { //内存中的模板已挂载到页面中
         this.getData()

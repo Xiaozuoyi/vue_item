@@ -81,18 +81,17 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    //未登录,首页或者登录页面可以正常访问
+    //未登录:不能去交易相关页面、不能去支付相关页面、不能去个人中心页面
+    let toPath = to.path;
     if (
-      to.path === "/login" ||
-      to.path === "/home" ||
-      to.path === "/register"
+      toPath.indexOf("/trade") != -1 ||
+      toPath.indexOf("/pay") != -1 ||
+      toPath.indexOf("/center") != -1
     ) {
-      next();
+      next("/login?redirect=" + toPath);
     } else {
-      alert("请先登录");
-      next("/login");
+      next();
     }
-    next();
   }
 });
 

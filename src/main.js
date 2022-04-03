@@ -13,6 +13,16 @@ Vue.component(Pagination.name, Pagination);
 import { MessageBox } from "element-ui";
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
+//引入懒加载插件
+import VueLazyload from "vue-lazyload";
+import atm from '@/assets/1.gif';
+Vue.use(VueLazyload, {
+  //懒加载默认图片
+  loading: atm
+})
+//引入表单验证插件
+import "@/plugins/validate";
+
 
 //引入路由
 import router from "@/router";

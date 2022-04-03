@@ -17,11 +17,25 @@
             <form action="##">
               <div class="input-text clearFix">
                 <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" v-model="phone" />
+                <input
+                  type="text"
+                  placeholder="邮箱/用户名/手机号"
+                  v-model="phone"
+                  name="username"
+                  v-validate="{ required: true, regex: /^[a-zA-Z0-9_-]{4,16}$/ }"
+                  :class="{ invalid: errors.has('username') }"
+                />
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="password" placeholder="请输入密码" v-model="password" />
+                <input
+                  type="password"
+                  placeholder="请输入密码"
+                  v-model="password"
+                  name="password"
+                  v-validate="{ required: true, regex: /^[0-9A-Za-z]{6,20}$/ }"
+                  :class="{ invalid: errors.has('password') }"
+                />
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
@@ -84,14 +98,17 @@ export default {
   methods: {
     //登录的回调函数
     async userLogin() {
-      try {
-        let { phone, password } = this
-        if (phone !== '', password !== '') {
+      const success = await this.$validator.validateAll();
+      if (success) {
+        try {
+          let { phone, password } = this
           await this.$store.dispatch('userLogin', { password, phone })
-          this.$router.push('/home')
+          //登录的路由组件:判定路由是否包含query参数,有的话就跳转到query参数,没有就跳转到首页
+          let toPath = this.$route.query.redirect || '/home';
+          this.$router.push(toPath)
+        } catch (error) {
+          alert(error.message)
         }
-      } catch (error) {
-        alert(error.message)
       }
     }
   },
