@@ -32,8 +32,6 @@ export default {
   mounted() {
     //获取floor组件的数据
     this.$store.dispatch('getFoolList')
-    //获取用户信息
-    this.$store.dispatch('getUserInfo')
   },
 }
 </script>

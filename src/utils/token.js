@@ -4,7 +4,7 @@ export const setToken = (token) => {
 };
 //会话读取token
 export const getToken = () => {
-  sessionStorage.getItem("Token");
+  return sessionStorage.getItem("Token");
 };
 //清除本地存储的token
 export const removeToken = () => sessionStorage.removeItem("Token");

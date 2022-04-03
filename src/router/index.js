@@ -1,16 +1,12 @@
 //路由配置文件
 import Vue from "vue";
+//引入vue-router路由插件
 import VueRouter from "vue-router";
+import routes from "./router";
+//引入store
+import store from "@/store";
 //使用插件
 Vue.use(VueRouter);
-//引入路由组件
-import Home from "@/pages/Home"; //首页
-import Search from "@/pages/Search"; //搜索
-import Login from "@/pages/Login"; //登录
-import Register from "@/pages/Register"; //注册
-import Detail from "@/pages/Detail"; //商品详情
-import AddCartSuccess from "@/pages/AddCartSuccess"; //添加购物车
-import ShopCart from "@/pages/ShopCart";
 
 //需要重写VueRouter.prototype原型对象身上的push|replace方法
 //先把VueRouter.prototype身上的push|replace方法进行保存一份
@@ -49,54 +45,55 @@ VueRouter.prototype.reqlace = function (location, resolve, reject) {
 };
 
 //配置路由
-export default new VueRouter({
+let router = new VueRouter({
   //配置路由
-  routes: [
-    //redirect重定向
-    {
-      path: "/",
-      redirect: "/home",
-    },
-    {
-      path: "/home",
-      component: Home,
-      meta: { show: true, title: "首页" },
-    },
-    {
-      name: "search",
-      path: "/search/:keyword?",
-      component: Search,
-      meta: { show: true, title: "搜索" },
-    },
-    {
-      path: "/login",
-      component: Login,
-      meta: { show: false, title: "登录" },
-    },
-    {
-      path: "/register",
-      component: Register,
-      meta: { show: false, title: "注册" },
-    },
-    {
-      path: "/detail/:commodityId",
-      component: Detail,
-      meta: { show: true, title: "商品详情" },
-    },
-    {
-      path: "/addcartsuccess",
-      name: "addcartsuccess",
-      component: AddCartSuccess,
-      meta: { show: true, title: "添加购物车" },
-    },
-    {
-      path: "/shopcart",
-      component: ShopCart,
-      meta: { show: true, title: "支付页面" },
-    },
-  ],
+  routes,
   scrollBehavior(to, from, savedPosition) {
     // 始终滚动到顶部
     return { y: 0 };
   },
 });
+
+//设置全局路由守卫
+router.beforeEach(async (to, from, next) => {
+  let token = store.state.user.token;
+  let name = store.state.user.userInfo.name;
+  //1.有token代表登录,全部页面放行
+  if (token) {
+    if (to.path == "/login" || to.path == "/register") {
+      next("/");
+    } else {
+      //已经登录了,访问的是非注册页面和登录页面
+      if (name) {
+        //已经登录了且拥有用户信息
+        next();
+      } else {
+        //登录了且没有用户信息
+        try {
+          //在路由跳转之前获取用户信息,并放行
+          await store.dispatch("getUserInfo");
+          next();
+        } catch (error) {
+          //token失效(token过期),清除前后端token,并重新跳转至登录页面
+          await store.dispatch("userLoginout");
+          next("/login");
+        }
+      }
+    }
+  } else {
+    //未登录,首页或者登录页面可以正常访问
+    if (
+      to.path === "/login" ||
+      to.path === "/home" ||
+      to.path === "/register"
+    ) {
+      next();
+    } else {
+      alert("请先登录");
+      next("/login");
+    }
+    next();
+  }
+});
+
+export default router;

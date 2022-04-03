@@ -9,6 +9,10 @@ Vue.component(Carousel.name, Carousel);
 //分页器全局组件
 import Pagination from "@/components/Pagination";
 Vue.component(Pagination.name, Pagination);
+//Element UI
+import { MessageBox } from "element-ui";
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 
 //引入路由
 import router from "@/router";
@@ -19,6 +23,8 @@ import store from "@/store";
 import "@/mock/mockServe";
 //引入swiper样式
 import "swiper/css/swiper.css";
+//统一引入
+import * as API from "@/api";
 new Vue({
   render: (h) => h(App),
   router,
@@ -26,5 +32,6 @@ new Vue({
   //全局事件总线$bus配置
   beforeCreate() {
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
 }).$mount("#app");

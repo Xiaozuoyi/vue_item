@@ -76,7 +76,7 @@
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade">结算</router-link>
         </div>
       </div>
     </div>
@@ -192,7 +192,7 @@ export default {
     },
     //已选择商品
     Selected() {
-      let arr = this.cartInfoList.filter(item => item.isChecked !== 1)
+      let arr = this.cartInfoList.filter(item => item.isChecked == 1)
       return arr.length
     },
   },
